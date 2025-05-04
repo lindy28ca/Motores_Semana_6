@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Musicas : MonoBehaviour
 {
-    public AudioClipSO audio;
+    public AudioData audioData;
     AudioSource musica;
     private void Awake()
     {
@@ -12,11 +12,19 @@ public class Musicas : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag =="Player")
+        if (other.gameObject.tag == "Player")
         {
-            print("Entro");
-            other.GetComponent<prota>().CambiarMusica(musica);
-            audio.PlayOneShoot();
+            AudioClip clip = audioData.AudioClip;
+            musica.PlayOneShot(clip);
+            StartCoroutine(SceneTransitionManager.Instance.FadeEffect());
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Player")
+        {
+            musica.Stop();
+            StartCoroutine(SceneTransitionManager.Instance.FadeEffect());
         }
     }
 }

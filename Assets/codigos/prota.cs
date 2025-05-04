@@ -12,6 +12,8 @@ public class prota : MonoBehaviour
     float movimientosz;
     public AudioSource pasos;
     private bool pasosReproduciéndose = false;
+    public MovimientoNPC npc;
+    private bool interaction = false;
     private void Awake()
     {
         protita = GetComponent<Rigidbody>();
@@ -24,6 +26,13 @@ public class prota : MonoBehaviour
     public void MovimientosZ(InputAction.CallbackContext context)
     {
         movimientosz = context.ReadValue<float>();
+    }
+    public void Interaccion(InputAction.CallbackContext context)
+    {
+        if(interaction == true)
+        {
+            npc.StartCoroutine("Interact");
+        }
     }
     private void Update()
     {
@@ -54,6 +63,13 @@ public class prota : MonoBehaviour
         {
             Musica.clip=musica.clip;
             Musica.Play();
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("npc"))
+        {
+            interaction = true;
         }
     }
 }
